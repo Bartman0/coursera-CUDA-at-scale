@@ -47,7 +47,8 @@
 #include <helper_cuda.h>
 #include <helper_string.h>
 
-bool printfNPPinfo(int argc, char *argv[]) {
+bool printfNPPinfo(int argc, char *argv[])
+{
   const NppLibraryVersion *libVer = nppGetLibVersion();
 
   printf("NPP Library Version %d.%d.%d\n", libVer->major, libVer->minor,
@@ -67,28 +68,37 @@ bool printfNPPinfo(int argc, char *argv[]) {
   return bVal;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
   printf("%s Starting...\n\n", argv[0]);
 
-  try {
+  try
+  {
     std::string sFilename;
     char *filePath;
 
     findCudaDevice(argc, (const char **)argv);
 
-    if (printfNPPinfo(argc, argv) == false) {
+    if (printfNPPinfo(argc, argv) == false)
+    {
       exit(EXIT_SUCCESS);
     }
 
-    if (checkCmdLineFlag(argc, (const char **)argv, "input")) {
+    if (checkCmdLineFlag(argc, (const char **)argv, "input"))
+    {
       getCmdLineArgumentString(argc, (const char **)argv, "input", &filePath);
-    } else {
+    }
+    else
+    {
       filePath = sdkFindFilePath("Lena.pgm", argv[0]);
     }
 
-    if (filePath) {
+    if (filePath)
+    {
       sFilename = filePath;
-    } else {
+    }
+    else
+    {
       sFilename = "Lena.pgm";
     }
 
@@ -97,19 +107,23 @@ int main(int argc, char *argv[]) {
     int file_errors = 0;
     std::ifstream infile(sFilename.data(), std::ifstream::in);
 
-    if (infile.good()) {
+    if (infile.good())
+    {
       std::cout << "nppiEdgeDetection opened: <" << sFilename.data()
                 << "> successfully!" << std::endl;
       file_errors = 0;
       infile.close();
-    } else {
+    }
+    else
+    {
       std::cout << "nppiEdgeDetection unable to open: <" << sFilename.data()
                 << ">" << std::endl;
       file_errors++;
       infile.close();
     }
 
-    if (file_errors > 0) {
+    if (file_errors > 0)
+    {
       exit(EXIT_FAILURE);
     }
 
@@ -117,13 +131,15 @@ int main(int argc, char *argv[]) {
 
     std::string::size_type dot = sResultFilename.rfind('.');
 
-    if (dot != std::string::npos) {
+    if (dot != std::string::npos)
+    {
       sResultFilename = sResultFilename.substr(0, dot);
     }
 
     sResultFilename += "_edge.pgm";
 
-    if (checkCmdLineFlag(argc, (const char **)argv, "output")) {
+    if (checkCmdLineFlag(argc, (const char **)argv, "output"))
+    {
       char *outputFilePath;
       getCmdLineArgumentString(argc, (const char **)argv, "output",
                                &outputFilePath);
@@ -147,9 +163,9 @@ int main(int argc, char *argv[]) {
     npp::ImageNPP_8u_C1 oDeviceDst(oSizeROI.width, oSizeROI.height);
 
     Npp8u *pScratchBuffer;
-    int nBufferSize, nLength;
-    NPP_CHECK_NPP(nppiFilterCannyBorderGetBufferSize(oSizeROI, &nLength));
-    nppsSumGetBufferSize_32f(nLength, &nBufferSize);
+    int nBufferSize;
+    NPP_CHECK_NPP(nppiFilterCannyBorderGetBufferSize(oSizeROI, &nBufferSize));
+    nppiFilterCannyBorderGetBufferSize(oSizeROI, &nBufferSize);
     // Allocate the scratch buffer
     cudaMalloc((void **)(&pScratchBuffer), nBufferSize);
 
@@ -157,7 +173,8 @@ int main(int argc, char *argv[]) {
     Npp16s nHighThreshold = 256;
 
     // run the edge detection
-    if ((nBufferSize > 0) && (pScratchBufferNPP != 0)) {
+    if ((nBufferSize > 0) && (pScratchBuffer != 0))
+    {
       NPP_CHECK_NPP(nppiFilterCannyBorder_8u_C1R(
           oDeviceSrc.data(), oDeviceSrc.pitch(), oSrcSize, oSrcOffset,
           oDeviceDst.data(), oDeviceDst.pitch(), oSizeROI, NPP_FILTER_SOBEL,
@@ -179,13 +196,17 @@ int main(int argc, char *argv[]) {
     nppiFree(oDeviceDst.data());
 
     exit(EXIT_SUCCESS);
-  } catch (npp::Exception &rException) {
+  }
+  catch (npp::Exception &rException)
+  {
     std::cerr << "Program error! The following exception occurred: \n";
     std::cerr << rException << std::endl;
     std::cerr << "Aborting." << std::endl;
 
     exit(EXIT_FAILURE);
-  } catch (...) {
+  }
+  catch (...)
+  {
     std::cerr << "Program error! An unknown type of exception occurred. \n";
     std::cerr << "Aborting." << std::endl;
 
