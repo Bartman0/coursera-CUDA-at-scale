@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
     // Allocate the scratch buffer
     cudaMalloc((void **)(&pScratchBuffer), nBufferSize);
 
-    Npp16s nLowThreshold = 72;
+    Npp16s nLowThreshold = 1;
     Npp16s nHighThreshold = 256;
 
     // run the edge detection
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
       NPP_CHECK_NPP(nppiFilterCannyBorder_8u_C1R(
           oDeviceSrc.data(), oDeviceSrc.pitch(), oSrcSize, oSrcOffset,
           oDeviceDst.data(), oDeviceDst.pitch(), oSizeROI, NPP_FILTER_SOBEL,
-          NPP_MASK_SIZE_3_X_3, nLowThreshold, nHighThreshold, nppiNormL2,
+          NPP_MASK_SIZE_5_X_5, nLowThreshold, nHighThreshold, nppiNormL2,
           NPP_BORDER_REPLICATE, pScratchBuffer));
     }
 
