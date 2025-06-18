@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project demonstrates the use of NVIDIA Performance Primitives (NPP) library with CUDA to perform image rotation. The goal is to utilize GPU acceleration to efficiently rotate a given image by a specified angle, leveraging the computational power of modern GPUs. The project is a part of the CUDA at Scale for the Enterprise course and serves as a template for understanding how to implement basic image processing operations using CUDA and NPP.
+This project demonstrates the use of NVIDIA Performance Primitives (NPP) library with CUDA to perform image rotation. The goal is to utilize GPU acceleration to efficiently do edge detection of a given image, leveraging the computational power of modern GPUs. The project is a part of the CUDA at Scale for the Enterprise course and serves as a template for understanding how to implement basic image processing operations using CUDA and NPP.
 
 ## Code Organization
 
@@ -37,7 +37,7 @@ x86_64
 
 ## Prerequisites
 
-Download and install the [CUDA Toolkit 11.4](https://developer.nvidia.com/cuda-downloads) for your corresponding platform.
+Download and install the [CUDA Toolkit 12.9](https://developer.nvidia.com/cuda-downloads) for your corresponding platform.
 Make sure the dependencies mentioned in [Dependencies]() section above are installed.
 
 ## Build and Run
@@ -63,7 +63,7 @@ This command will execute the compiled binary, rotating the input image (Lena.pn
 If you wish to run the binary directly with custom input/output files, you can use:
 
 ```bash
-./bin/imageEdgeDetection --input data/Lena.pgm --output data/Lena_edge.pgm
+./bin/imageEdgeDetection --input data/teapot.pgm --output data/teapot_edge.pgm
 ```
 
 - Cleaning Up
